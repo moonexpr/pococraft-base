@@ -38,5 +38,5 @@ function ChangeServerState( state )
 	elseif state == GAME_STATE_NORMAL then
 		ServerState = GAME_STATE_NORMAL
 	end
-	hook.Call( "AppendServerState", GAMEMODE, state )
+	hook.Run( "AppendServerState", state )
 end
