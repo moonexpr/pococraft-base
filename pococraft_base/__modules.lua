@@ -2,7 +2,7 @@ function BetterLogging( text )
 	ServerLog( text .. "\n" )
 end
 
-function _loadmodule( module, firstrow, lastrow )
+function _loadmodule( module )
 	ModInfo = {
 		Name,
 		Author,
@@ -12,36 +12,22 @@ function _loadmodule( module, firstrow, lastrow )
 	if ModInfo.Name == nil then ModInfo.Name = "--blank" end
 	if ModInfo.Author == nil then ModInfo.Author = "--blank" end
 
-	if firstrow or lastrow then
-		if TestSuccess() then
-			BetterLogging( "| = Pococraft Base: Sucessfully loaded module \"" .. module .. "\"!" )
-			BetterLogging( "| ? Name: " .. ModInfo.Name )
-			BetterLogging( "| ? Author: " .. ModInfo.Author )
-			BetterLogging( "" ) -- 1 new line
-		else
-			BetterLogging( "|   Pococraft Base: Failed to load module \"" .. module .. "\"!" )
-		end
+	if TestSuccess() then
+		BetterLogging( "| + Pococraft Base: Sucessfully loaded module \"" .. module .. "\"!\n" )
+		BetterLogging( "| ? Name: " .. ModInfo.Name )
+		BetterLogging( "| ? Author: " .. ModInfo.Author )
 	else
-		if TestSuccess() then
-			BetterLogging( "| + Pococraft Base: Sucessfully loaded module \"" .. module .. "\"!\n" )
-			BetterLogging( "| ? Name: " .. ModInfo.Name )
-			BetterLogging( "| ? Author: " .. ModInfo.Author )
-			BetterLogging( "" ) -- 1 new line
-		else
-			BetterLogging( "| + Pococraft Base: Failed to load module \"" .. module .. "\"!" )
-		end
+		BetterLogging( "| + Pococraft Base: Failed to load module \"" .. module .. "\"!" )
 	end
 end
 
 function _startloading()
-	local files, dirctories = file.Find( "pococraft_base/modules/*", "LUA" )
-	for key, row in pairs( dirctories ) do
-		if key == table.GetFirstKey( dirctories ) then
-			_loadmodule( row, true, false )
-		elseif key == table.GetLastKey( dirctories ) then
-			_loadmodule( row, false, true )
-		else
-			_loadmodule( row, false, false )
+	local function ProcessFiles( files, folders )
+		for key, row in pairs( folders ) do
+			_loadmodule( row, )
 		end
 	end
+
+	ProcessFiles( file.Find( "pococraft_base/modules/ALL/*", "LUA" ) )
+	ProcessFiles( file.Find( "pococraft_base/modules/" .. tostring( GetConVar("hostport"):GetInt() ) .. "/*", "LUA" ) )
 end
