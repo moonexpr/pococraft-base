@@ -14,7 +14,7 @@ function _loadmodule( module, firstrow, lastrow )
 
 	if firstrow or lastrow then
 		if TestSuccess() then
-			BetterLogging( "| + Pococraft Base: Sucessfully loaded module \"" .. module .. "\"!" )
+			BetterLogging( "| = Pococraft Base: Sucessfully loaded module \"" .. module .. "\"!" )
 			BetterLogging( "| ? Name: " .. ModInfo.Name )
 			BetterLogging( "| ? Author: " .. ModInfo.Author )
 			BetterLogging( "" ) -- 1 new line
