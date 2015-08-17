@@ -28,6 +28,6 @@ function _startloading()
 		end
 	end
 
-	ProcessFiles( file.Find( "pococraft_base/modules/ALL/*", "LUA" ) )
-	ProcessFiles( file.Find( "pococraft_base/modules/" .. tostring( GetConVar("hostport"):GetInt() ) .. "/*", "LUA" ) )
+	ProcessFiles( file.Find( "pococraft_base/modules/ALL/", "LUA" ) )
+	ProcessFiles( file.Find( "pococraft_base/modules/" .. tostring( GetConVar("hostport"):GetInt() ) .. "/", "LUA" ) )
 end
