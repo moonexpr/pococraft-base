@@ -24,7 +24,7 @@ end
 function _startloading()
 	local function ProcessFiles( files, folders )
 		for key, row in pairs( folders ) do
-			_loadmodule( row, )
+			_loadmodule( row )
 		end
 	end
 
