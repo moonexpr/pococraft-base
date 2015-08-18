@@ -2,22 +2,24 @@ function BetterLogging( text )
 	ServerLog( text .. "\n" )
 end
 
-function _loadmodule( module )
-	ModInfo = {
-		Name,
-		Author,
-	}
-	include( "pococraft_base/modules/" .. module .. "/init.lua" )
-	
-	if ModInfo.Name == nil then ModInfo.Name = "??" end
-	if ModInfo.Author == nil then ModInfo.Author = "??" end
+function _loadmodule( location )
+	for _, module in pairs( file.Find( location, "LUA" ) ) do
+		ModInfo = {
+			Name,
+			Author,
+		}
+		include( string.format( "%s%s/init.lua", string.gsub(location, "*", ""), module) )
+		
+		if ModInfo.Name == nil then ModInfo.Name = string.format("%s (No ModInfo Table)", module) end
+		if ModInfo.Author == nil then ModInfo.Author = "Unknown (No ModInfo Table)" end
 
-	if TestSuccess() then
-		BetterLogging( "| + Pococraft Base: Sucessfully loaded module \"" .. module .. "\"!\n" )
-		BetterLogging( "| ? Name: " .. ModInfo.Name )
-		BetterLogging( "| ? Author: " .. ModInfo.Author )
-	else
-		BetterLogging( "| + Pococraft Base: Failed to load module \"" .. module .. "\"!" )
+		if TestSuccess() then
+			BetterLogging( "| + Pococraft Base: Sucessfully loaded module \"" .. module .. "\"!" )
+			BetterLogging( "| ? Name: " .. ModInfo.Name )
+			BetterLogging( "| ? Author: " .. ModInfo.Author )
+		else
+			BetterLogging( "| + Pococraft Base: Failed to load module \"" .. module .. "\"!" )
+		end
 	end
 end
 
@@ -27,9 +29,6 @@ function _startloading()
 			_loadmodule( row )
 		end
 	end
-
-	global_files, global_folders = file.Find( "pococraft_base/modules/ALL/*", "LUA" )
-	port_files, port_folders = file.Find( "pococraft_base/modules/" .. tostring( GetConVar("hostport"):GetInt() ) .. "/*", "LUA" )
-	ProcessFiles( global_folders )
-	ProcessFiles( port_folders )
+	_loadmodule( "pococraft_base/modules/all/*" )
+	_loadmodule( "pococraft_base/modules/" .. tostring( GetConVar("hostport"):GetInt() ) .. "/*" )
 end
