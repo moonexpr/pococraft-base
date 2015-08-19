@@ -20,25 +20,6 @@ function CreateTriggerEntity( name, startpos, endpos )
 	area:SetRenderMode( RENDERMODE_NONE )
 	area:Spawn()
 	area:Activate()
-end
 
-for _, location in pairs(rp_christmastown) do
-
-	-------------------
-	-- For Later Use --
-	-------------------
-	ServerLog( "*** Location: Started to format \"" .. location[1] .. "\"!" )
-	TownData.loc_start[name] = location[2]
-	TownData.loc_end[name] = location[3]
-	ServerLog( "*** Location: Sucessfully added location to table!" )
-
-	------------------------------
-	-- Added the trigger entity --
-	------------------------------
-
-	if CreateTriggerEntity( string.format("LOC_%s", location[1] ), location[2], location[3]) then
-		ServerLog( "*** Location: Sucessfully created trigger entity for this location!" )
-	else
-		ServerLog( "*** Location: Failed to create trigger entity :(" )
-	end
+	ServerLog( "*** Location: Sucessfully created trigger entity for this location!" )
 end

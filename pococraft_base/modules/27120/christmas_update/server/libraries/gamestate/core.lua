@@ -5,20 +5,20 @@ function LockdownServer( type )
 		function GAMEMODE:CheckPassword( SteamID64, IP, ServerPass, ClientPass, ClientName )
 			return false, "Sorry, It looks as if we are experiencing technical issues that have caused our server to stop operating normally. Please be patient with us as we resolve this issue!"
 		end
-		game.ConsoleCommand( "kickall \"Unfortunately, We're experiencing internal issues that are preventing our servers from operating normally.\"\n" )
+		game.ConsoleCommand( "hostname Pococraft Christmas 2015 (Broken)\n" )
 	elseif type == 2 then
 		function GAMEMODE:CheckPassword( SteamID64, IP, ServerPass, ClientPass, ClientName )
 			return false, "This server is used for the development of Christmas 2015! For more information, please visit us at forums.pococraft.org!"
 		end
-		game.ConsoleCommand( "sv_password #DEVELOPER_PASSWORD\n" )
-		game.ConsoleCommand( "hostname Pococraft Christmas 2015 (Locked)\n" )
-		for id, ply in pairs(player.GetAll()) do
-			ply:SendLua( [[
-				LocalPlayer():ConCommand( "connect 72.14.181.134:27015" )
-			]])
-		end
+		game.ConsoleCommand( "hostname Pococraft Christmas 2015 (Development Mode)\n" )
 	else
 		ServerLog( "[ERROR] Christmas 2015: Attempted to use lockdown type " .. type )
+	end
+	game.ConsoleCommand( "sv_password #DEVELOPER_PASSWORD\n" )
+	for id, ply in pairs(player.GetAll()) do
+		ply:SendLua( [[
+			LocalPlayer():ConCommand( "connect 72.14.181.134:27015" )
+		]])
 	end
 end
 

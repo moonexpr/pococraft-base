@@ -1,18 +1,13 @@
 ModInfo.Name = "Christmas Update"
 ModInfo.Author = "Potatofactory"
 
-Initialize = {} -- Initialization Stage
-
-include( "server/convars.lua" )
 include( "server/libraries/gamestate/core.lua" )
+include( "server/libraries/locations/core.lua" )
 
-ServerState = GAME_STATE_NORMAL
+include( "server/sv_convars.lua" )
+include( "server/sv_states.lua" )
 
-if GetConVarString("gamemode") != "sandbox" then -- Safety First!
-	ChangeServerState( GAME_STATE_MISMATCH )
-end
-
-ChangeServerState( GAME_STATE_DEVELOPMENT )
+AddCSLuaFile( "cl_init.lua" ) -- Load client-side scripts
 
 function TestSuccess()
 	return true -- I dunno yet :|
