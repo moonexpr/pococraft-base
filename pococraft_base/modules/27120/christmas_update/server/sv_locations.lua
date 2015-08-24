@@ -12,5 +12,5 @@ for _, location in pairs(rp_christmastown) do
 	-- Added the trigger entity --
 	------------------------------
 
-	CreateTriggerEntity( string.format("LOC_%s", location[1] ), location[2], location[3])
+	CreateTriggerEntity( string.format("LOC_%s", location[1] ) )
 end
