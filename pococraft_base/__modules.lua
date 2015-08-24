@@ -3,12 +3,13 @@ function BetterLogging( text )
 end
 
 function _loadmodule( location )
-	for _, module in pairs( file.Find( location, "LUA" ) ) do
+	files, directories = file.Find( location, "LUA" )
+	for _, module in pairs( directories ) do
 		ModInfo = {
 			Name,
 			Author,
 		}
-		include( string.format( "%s%s/init.lua", string.gsub(location, "*", ""), module) )
+		include( string.format( "%s%s/init.lua", string.gsub(location, "*", ""), module ) )
 		
 		if ModInfo.Name == nil then ModInfo.Name = string.format("%s (No ModInfo Table)", module) end
 		if ModInfo.Author == nil then ModInfo.Author = "Unknown (No ModInfo Table)" end
@@ -24,11 +25,6 @@ function _loadmodule( location )
 end
 
 function _startloading()
-	local function ProcessFiles( folders )
-		for key, row in pairs( folders ) do
-			_loadmodule( row )
-		end
-	end
 	_loadmodule( "pococraft_base/modules/all/*" )
 	_loadmodule( "pococraft_base/modules/" .. tostring( GetConVar("hostport"):GetInt() ) .. "/*" )
 end
