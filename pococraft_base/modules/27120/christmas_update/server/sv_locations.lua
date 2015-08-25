@@ -1,16 +1,17 @@
-for _, location in pairs(rp_christmastown) do
+for _, location in pairs(LocationsData[game.GetMap()]) do
 
 	-------------------
 	-- For Later Use --
 	-------------------
-	ServerLog( "*** Location: Started to format \"" .. location[1] .. "\"!" )
-	TownData.loc_start[name] = location[2]
-	TownData.loc_end[name] = location[3]
-	ServerLog( "*** Location: Sucessfully added location to table!" )
+	AddSystemLog( "STAT", "Started to format \"" .. location[1] .. "\"!" )
+	TownData.loc_start[location[1]] = location[2]
+	TownData.loc_end[location[1]] = location[3]
+	TownData.loc_ambient[location[1]] = location[4]
+	AddSystemLog( "STAT", "Successfully added location to tables!" )
 
 	------------------------------
 	-- Added the trigger entity --
 	------------------------------
 
-	CreateTriggerEntity( string.format("LOC_%s", location[1] ) )
+	CreateTriggerEntity( string.format("LOC_%s", string.gsub(location[1], " ", "_") ) )
 end
