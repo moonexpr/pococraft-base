@@ -17,6 +17,12 @@ ELVES_EVENT_CLIMBING = 32
 ELVES_EVENT_SANTA_ASSIST = 33
 
 ElvesDialouge = {
+	p_greetings01 = "",
+	p_greetings02 = "",
+	p_greetings03 = "",
+	p_greetings04 = "",
+	p_greetings05 = "",
+	p_greetings06 = "",
 	w_busy01 = "",
 	w_busy02 = "",
 	w_busy03 = "",
@@ -59,6 +65,8 @@ ElvesDialouge = {
 
 ElvesSFX = {
 	happy = {
+		ow = "",
+		ouch = "",
 		wee01 = "",
 		wee02 = "",
 		wee03 = "",
@@ -69,6 +77,8 @@ ElvesSFX = {
 		haha03 = "",
 	}
 	angry = {
+		ow = "",
+		ouch = "",
 		grunt01 = "",
 		grunt02 = "",
 		grunt03 = "",

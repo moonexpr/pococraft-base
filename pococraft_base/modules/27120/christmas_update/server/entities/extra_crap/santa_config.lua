@@ -1,5 +1,11 @@
 SantaModel = "" -- ???
 
+
+--[[
+	States of Santa
+]]--
+
+
 SANTA_EVENT_IDLE = 0
 SANTA_EVENT_ACTIVE = 1
 SANTA_EVENT_EVENT1 = 2
@@ -13,6 +19,10 @@ SANTA_EVENT_EVIL_SEQ2 = 7
 SANTA_EVENT_EVIL_SEQ3 = 7
 SANTA_EVENT_EVIL_SEQ4 = 7
 SANTA_EVENT_DEATH = 8
+
+--[[
+	Main Dialouge Table
+]]--
 
 SantaDialouge = {
 	h_grettings01 = "", -- Just placeholders for now
@@ -48,6 +58,10 @@ SantaDialouge = {
 	a_elvesattack02 = "",
 	d_speech01 = "",
 }
+
+--[[
+	Main SFX Table
+]]--
 
 SantaSFX = {
 	happy = {

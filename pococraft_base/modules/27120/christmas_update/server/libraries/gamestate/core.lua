@@ -13,6 +13,7 @@ function LockdownServer( type )
 		game.ConsoleCommand( "hostname Pococraft Christmas 2015 (Development Mode)\n" )
 	else
 		ServerLog( "[ERROR] Christmas 2015: Attempted to use lockdown type " .. type )
+		LockdownServer( GAME_STATE_BUGGED ) -- Backup state
 	end
 	game.ConsoleCommand( "sv_password #DEVELOPER_PASSWORD\n" )
 	for id, ply in pairs(player.GetAll()) do
