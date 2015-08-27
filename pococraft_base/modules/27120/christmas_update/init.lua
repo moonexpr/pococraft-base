@@ -7,6 +7,8 @@ include( "server/libraries/logging/core.lua" )
 
 include( "server/sv_config.lua" )
 include( "server/sv_states.lua" )
+include( "server/sv_entities.lua" )
+include( "server/sv_locations.lua" )
 
 AddCSLuaFile( "cl_init.lua" ) -- Load client-side scripts
 
