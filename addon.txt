@@ -1,0 +1,9 @@
+"AddonInfo"
+{
+	"name"				"Pococraft Base"
+	"version"			"b_09202015"
+	"up_date"			"09/20/15"
+	"author_url"		"http://www.pococraft.org"
+	"info"				"Advanced Admin Mod"
+	"override"			"0"
+}
