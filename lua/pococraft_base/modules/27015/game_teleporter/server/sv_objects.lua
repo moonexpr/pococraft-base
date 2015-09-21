@@ -13,10 +13,9 @@ function GenerateTeleporter()
 	EntsList.CenterBase:SetPos( GeneralPosition + Vector(0, 31.59375, 28) )
 	EntsList.CenterBase:SetModel( Model("models/props_lab/teleplatform.mdl") )
 	
-	EntsList.TeleporterBall = ents.Create("prop_physics")
+	EntsList.TeleporterBall = ents.Create("teleporter_core")
 	EntsList.TeleporterBall:SetAngles( GeneralAngles )
 	EntsList.TeleporterBall:SetPos( GeneralPosition + Vector(0, 31.59375, 78) )
-	EntsList.TeleporterBall:SetModel(Model("models/dav0r/hoverball.mdl") )
 	
 	EntsList.CenterBack = ents.Create("prop_physics")
 	EntsList.CenterBack:SetPos( GeneralPosition + Vector( 0.125, 30.37, -150.03125 ) )
@@ -38,29 +37,9 @@ function GenerateTeleporter()
 		ent:Activate()
 		ent:SetCollisionGroup( COLLISION_GROUP_INTERACTIVE )
 		ent:Spawn()
-		if IsValid(ent:GetPhysicsObject()) then
-			ent:GetPhysicsObject():EnableMotion( false )
-			ent:GetPhysicsObject():SetPersistent( true )
-		end
+		ent:GetPhysicsObject():EnableMotion( false )
 	end
 	
 	PlaySound(EntsList.TeleporterBall)
 	ParticleAdd(EntsList.TeleporterBall)
-	
-	function EntsList.TeleporterBall:Touch( ent )
-		if not ent:IsValid() or ent:IsWorld() then return end
-		if ent:IsPlayer() then
-			if ent:IsBot() then ent:Kick( "Ejected from our world" ) end
-			PortalPlayer( ent )
-		elseif ent:IsNPC() then
-			ent:SetName(tostring(ent:GetCreationID()))
-			local dissolve = ents.Create("env_entity_dissolver")
-			dissolve:SetPos(ent:GetPos())
-			dissolve:SetKeyValue("target", ent:GetName())
-			dissolve:SetKeyValue("dissolvetype", "1")
-			dissolve:Spawn()
-			dissolve:Fire("Dissolve", "", 0)
-			dissolve:Fire("kill", "", 1)
-		end
-	end
 end

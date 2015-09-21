@@ -6,6 +6,6 @@ surface.CreateFont( "WarningFont", {
     outline = false,
 } )
         
-hook.Add( "HUDPaint", "TimeToUpdate", function()
+hook.Add( "HUDPaint", "", function()
     draw.DrawText( "Alpha Concept: This does not represent the final product", "WarningFont", surface.ScreenWidth() / 2, surface.ScreenHeight() - 40, Color(255, 255, 255, 250), TEXT_ALIGN_CENTER )
 end )
