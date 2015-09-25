@@ -1,11 +1,13 @@
-include( "pococraft_base/__modules.lua" )
-include( "pococraft_base/__info.lua" )
+include( "pococraft_base/sv_info.lua" )
+include( "pococraft_base/sv_modules.lua" )
 
-game.ConsoleCommand( "log on\n" ) -- Force start
+Logging.CreateLog()
 
 runtime = os.time()
-BetterLogging( "Pococraft Base [Version " .. ServerManager.Version .. "] (c) 2015 PocoCraft. All Rights Reserved." )
-BetterLogging( "Authors: " .. ServerManager.Contributors )
+
+Logging.AddLog( "Pococraft Base [Version " .. ServerManager.Version .. "] (c) 2015 PocoCraft. All Rights Reserved." )
+Logging.AddLog( "Authors: " .. ServerManager.Contributors )
 
 _startloading()
-BetterLogging( "Pococraft Base Finished (Loaded in " .. os.time() - runtime .. " seconds!)")
+
+Logging.AddLog( "Pococraft Base Finished (Loaded in " .. os.time() - runtime .. " seconds!)")
