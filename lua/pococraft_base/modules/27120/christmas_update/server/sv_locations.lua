@@ -13,5 +13,5 @@ for _, location in pairs(LocationsData[game.GetMap()]) do
 	-- Added the trigger entity --
 	------------------------------
 
-	ents.Create("ent_areatrigger"):SpawnArea( string.gsub(location[1], " ", "_") )
+	ents.Create("area_trigger"):SpawnFunction( string.gsub(location[1], " ", "_") )
 end

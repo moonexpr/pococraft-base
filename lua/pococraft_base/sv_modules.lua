@@ -23,19 +23,17 @@ function Logging.AddLog( string, closing )
 	end
 end
 
-hook.Add( "ShutDown", "EndLogging", Logging.AddLog( "Changing Maps", true ) )
+hook.Add( "ShutDown", "EndLogging", Logging.AddLog( "Changing Maps", true ) ) -- Fires when changing maps
 
 function _loadmodule( location )
 	files, directories = file.Find( location, "LUA" )
 	for _, module in pairs( directories ) do
 		ModInfo = {
-			Name,
-			Author,
+			Name = string.format("%s (No ModInfo Table)", module),
+			Author = "Unknown (No ModInfo Table)",
 		}
+
 		include( string.format( "%s%s/init.lua", string.gsub(location, "*", ""), module ) )
-		
-		if ModInfo.Name == nil then ModInfo.Name = string.format("%s (No ModInfo Table)", module) end
-		if ModInfo.Author == nil then ModInfo.Author = "Unknown (No ModInfo Table)" end
 
 		if TestSuccess() then
 			Logging.AddLog( "| + Pococraft Base: Sucessfully loaded module \"" .. module .. "\"!" )

@@ -24,7 +24,7 @@ function ChangeDirection()
 end
 
 function CalcDensity()
-	if ChangeDirection == nil then
+	if not IsValid(ChangeDirection) then
 		return SnowDirection, tonumber( string.format( ".%i%i", math.random(0, 5), math.random(0, 9) ) )
 	else
 		if ChangeDirection then
