@@ -1,34 +1,22 @@
-ElvesConfig = {}
+ElvesModel = "" -- ???
 
-ElvesConfig.Model = "" -- ???
+ELVES_ACT_WORKING01 = 01
+ELVES_ACT_WORKING02 = 02
+ELVES_ACT_WORKING03 = 03
+ELVES_ACT_WORKING04 = 04
 
---[[
-	States of Santa
-]]--
+ELVES_ACT_RESTING = 10
 
-ElvesConfig.States = {
-	ELVES_ACT_WORKING01 = 01,
-	ELVES_ACT_WORKING02 = 02,
-	ELVES_ACT_WORKING03 = 03,
-	ELVES_ACT_WORKING04 = 04,
+ELVES_ACT_PLAYING01 = 20
+ELVES_ACT_PLAYING02 = 22
+ELVES_ACT_PLAYING03 = 23
 
-	ELVES_ACT_RESTING = 10,
+ELVES_EVENT_ATTACKING = 30
+ELVES_EVENT_STEALING = 31
+ELVES_EVENT_CLIMBING = 32
+ELVES_EVENT_SANTA_ASSIST = 33
 
-	ELVES_ACT_PLAYING01 = 20,
-	ELVES_ACT_PLAYING02 = 22,
-	ELVES_ACT_PLAYING03 = 23,
-
-	ELVES_EVENT_ATTACKING = 30,
-	ELVES_EVENT_STEALING = 31,
-	ELVES_EVENT_CLIMBING = 32,
-	ELVES_EVENT_SANTA_ASSIST = 33,
-}
-
---[[
-	Main Dialouge Table
-]]--
-
-ElvesConfig.Dialouge = {
+ElvesDialouge = {
 	p_greetings01 = "",
 	p_greetings02 = "",
 	p_greetings03 = "",
@@ -75,7 +63,7 @@ ElvesConfig.Dialouge = {
 	d_scream03 = "",
 }
 
-ElvesConfig.SFX = {
+ElvesSFX = {
 	happy = {
 		ow = "",
 		ouch = "",

@@ -1,36 +1,30 @@
-SantaConfig = {}
+SantaModel = "" -- ???
 
-SantaConfig.Model = "" -- ???
-
---[[
-	Positions of Santa
-]]--
-SantaConfig.Pos = {
-
-}
 
 --[[
 	States of Santa
 ]]--
 
-SantaConfig.States = {
-	SANTA_EVENT_IDLE = 0,
-	SANTA_EVENT_ACTIVE = 1,
-	SANTA_EVENT_EVENT1 = 12,
-	SANTA_EVENT_EVENT2 = 13,
-	SANTA_EVENT_EVENT3 = 14,
-	SANTA_EVENT_EVENT4 = 15,
-	SANTA_EVENT_EVENT5 = 16,
-	SANTA_EVENT_EVENTSPECIAL = 9999,
-	SANTA_EVENT_EVIL_SEQ1 = 22,
-	SANTA_EVENT_DEATH = 32
-}
+
+SANTA_EVENT_IDLE = 0
+SANTA_EVENT_ACTIVE = 1
+SANTA_EVENT_EVENT1 = 2
+SANTA_EVENT_EVENT2 = 3
+SANTA_EVENT_EVENT3 = 4
+SANTA_EVENT_EVENT4 = 5
+SANTA_EVENT_EVENT5 = 6
+SANTA_EVENT_EVENTSPECIAL = 9999
+SANTA_EVENT_EVIL_SEQ1 = 7
+SANTA_EVENT_EVIL_SEQ2 = 7
+SANTA_EVENT_EVIL_SEQ3 = 7
+SANTA_EVENT_EVIL_SEQ4 = 7
+SANTA_EVENT_DEATH = 8
 
 --[[
 	Main Dialouge Table
 ]]--
 
-SantaConfig.Dialouge = {
+SantaDialouge = {
 	h_grettings01 = "", -- Just placeholders for now
 	h_grettings02 = "",
 	h_grettings03 = "",
@@ -69,7 +63,7 @@ SantaConfig.Dialouge = {
 	Main SFX Table
 ]]--
 
-SantaConfig.SFX = {
+SantaSFX = {
 	happy = {
 		bells1 = "",
 		bells2 = "",
