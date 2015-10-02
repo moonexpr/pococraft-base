@@ -2,20 +2,18 @@ Logging = {}
 
 function Logging.CreateLog()
 	Logging.File = string.format( "%s/%s", ServerManager.LoggingDirectory, #file.Find( ServerManager.LoggingDirectory, "DATA" ) + 1)
-	file.Write( Logging.File, "*** Logging Started on " .. os.date("%m/%d/%y @ " .. game.GetMap()) .. " ***\n" )
+	file.Write( Logging.File, "*** Logging Started on " .. os.date("%m/%d/%y @ " .. game.GetMap()) .. " ***\n\n" )
 end
 
 function Logging.AddLog( message, closing )
 	if IsValid(closing) and closing then
 		file.Append( Logging.File, 
-			string.format("%s%s\n", file.Read( Logging.File, "DATA" ), 
-				string.format( "*** Logging Terminated! Reason: %s ***", message )
-			)
+			string.format( "%s*** Logging Terminated! Reason: %s ***\n", file.Read( Logging.File, "DATA" ), message )
 		)
 		Logging.CreateLog() -- Close the current logging method and start a new file
 	else
 		file.Append( Logging.File, 
-			string.format("%s[%s] $ %s\n", file.Read( Logging.File, "DATA" ), os.date("%H:%M | %m/%d/%y @ " .. game.GetMap()), message )
+			string.format( "%s[%s] $ %s\n", file.Read( Logging.File, "DATA" ), os.date("%H:%M | %m/%d/%y @ " .. game.GetMap()), message )
 		)
 	end
 end
