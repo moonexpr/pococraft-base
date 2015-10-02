@@ -3,10 +3,6 @@ include( "extra_crap/elves_config.lua" )
 ENT.Spawnable		= false
 ENT.AdminSpawnable	= false
 
-<<<<<<< HEAD:lua/entities/npc_elve.lua
-ENT.Spawnable		= false
-ENT.AdminSpawnable	= false
-
 ENT.SoundList = {
 	SANTA_EVENT_IDLE = function() self:EmitSound( ElvesDialouge['w_busy0' .. math.random(1, 2)] ) end,
 	SANTA_EVENT_ACTIVE = function() self:EmitSound( ElvesDialouge['p_greetings0' .. math.random(1, 6)] ) end,
@@ -33,18 +29,17 @@ function ENT:Initialize()
 	if #ents.FindByClass( "npc_elve" ) <= Config.ElvesMax["e" .. GetSantaState()] then
 		self:SetModel( ElvesConfig.Model )
 		self:SetPos( pos ) -- ?
-=======
+end
+
 function ENT:SpawnFunction()
 	if #ents.FindByClass( "npc_elve" ) <= 8 then
 		self:SetState( SANTA_EVENT_ACTIVE )
 		self:SetPos( pos )
->>>>>>> parent of e634f40... Added Server Teleporter Module + Fixed Player Pickup & More!:pococraft_base/modules/27120/christmas_update/server/entities/npc_elve.lua
 		self:Activate()
 		self:Spawn()
 	end
 end
 
-<<<<<<< HEAD:lua/entities/npc_elve.lua
 function ENT:Use( activator, caller )
 	if not ply:IsPlayer() or not ply:Alive() then return end
 	if not cooldown then
@@ -54,7 +49,8 @@ function ENT:Use( activator, caller )
 			cooldown = false
 		end)
 	end
-=======
+end
+
 --[[---------------------------------------------------------
    Name: Initialize
 -----------------------------------------------------------]]
@@ -67,5 +63,4 @@ end
 -----------------------------------------------------------]]
 function ENT:Use( activator, caller )
 
->>>>>>> parent of e634f40... Added Server Teleporter Module + Fixed Player Pickup & More!:pococraft_base/modules/27120/christmas_update/server/entities/npc_elve.lua
 end

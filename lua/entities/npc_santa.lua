@@ -18,8 +18,7 @@ include( "extra_crap/santa_config.lua" )
 	SANTA_EVENT_DEATH = 8
 ]]--
 
-<<<<<<< HEAD:lua/entities/npc_santa.lua
-ENT.Spawnable			= false
+ENT.Spawnable		= false
 ENT.AdminSpawnable	= false
 
 function ENT:SpawnFunction( )
@@ -33,9 +32,8 @@ end
 function ENT:SetState( state )
 	self:SetNWString( "SantaState", state )
 	AddSystemLog( L.INFO, "Changing Santa's State..." )
-=======
-ENT.Spawnable		= false
-ENT.AdminSpawnable	= false
+
+end
 
 function ENT:SpawnFunction( pos, state )
 	if #ents.FindByClass( "npc_santa" ) == 1 then
@@ -44,7 +42,6 @@ function ENT:SpawnFunction( pos, state )
 		self:Activate()
 		self:Spawn()
 	end
->>>>>>> parent of e634f40... Added Server Teleporter Module + Fixed Player Pickup & More!:pococraft_base/modules/27120/christmas_update/server/entities/npc_santa.lua
 end
 
 function ENT:Use( ply )
@@ -70,7 +67,6 @@ function ENT:Touch( ply )
 end
 
 function ENT:Initialize()
-<<<<<<< HEAD:lua/entities/npc_santa.lua
 	if #ents.FindByClass( "npc_santa" ) == 1 then
 		self:SetState( "SANTA_EVENT_ACTIVE" )
 		self:SetModel( SantaConfig.Model )
@@ -81,7 +77,4 @@ function ENT:Initialize()
 		return false
 		AddSystemLog( "FAILURE", "Failed to create santa! (Reached Max Limit | Santa State: " .. self:GetState() .. ")" )
 	end
-=======
-	self:SetModel( SantaModel )
->>>>>>> parent of e634f40... Added Server Teleporter Module + Fixed Player Pickup & More!:pococraft_base/modules/27120/christmas_update/server/entities/npc_santa.lua
 end
