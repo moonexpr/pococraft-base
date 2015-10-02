@@ -75,7 +75,7 @@ SantaConfig.SFX = {
 		bells2 = "",
 		bells3 = "",
 		bells4 = "",
-	}
+	},
 	angry = {
 		roar1 = "",
 		roar2 = "",
@@ -83,7 +83,7 @@ SantaConfig.SFX = {
 		pain_grunt2 = "",
 		pain_grunt3 = "",
 		death_scream = "",
-	}
+	},
 	death = {
 		moan = ""
 	}

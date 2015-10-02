@@ -74,7 +74,7 @@ function ENT:Initialize()
 		self:Activate()
 		self:Spawn()
 	else
-		return false
 		AddSystemLog( "FAILURE", "Failed to create santa! (Reached Max Limit | Santa State: " .. self:GetState() .. ")" )
+		return false
 	end
 end

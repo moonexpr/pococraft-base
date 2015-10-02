@@ -87,7 +87,7 @@ ElvesConfig.SFX = {
 		haha01 = "",
 		haha02 = "",
 		haha03 = "",
-	}
+	},
 	angry = {
 		ow = "",
 		ouch = "",
@@ -96,7 +96,7 @@ ElvesConfig.SFX = {
 		grunt03 = "",
 		whoopie01 = "",
 		whoopie02 = "",
-	}
+	},
 	death = {
 		ugh01 = "",
 		ugh02 = "",

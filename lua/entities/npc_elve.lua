@@ -29,6 +29,7 @@ function ENT:Initialize()
 	if #ents.FindByClass( "npc_elve" ) <= Config.ElvesMax["e" .. GetSantaState()] then
 		self:SetModel( ElvesConfig.Model )
 		self:SetPos( pos ) -- ?
+	end
 end
 
 function ENT:SpawnFunction()

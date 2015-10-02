@@ -1,4 +1,6 @@
-Logging = {}
+Logging = {
+	File = nil
+}
 
 function Logging.CreateLog()
 	Logging.File = string.format( "%s/%s", ServerManager.LoggingDirectory, #file.Find( ServerManager.LoggingDirectory, "DATA" ) + 1)
@@ -6,9 +8,16 @@ function Logging.CreateLog()
 end
 
 function Logging.AddLog( message, closing )
-	if IsValid(closing) and closing then
+	
+	if Logging.File == nil then
+		Logging.CreateLog()
+		Logging.AddLog( message, closing )
+		return
+	end
+
+	if closing != nil and closing then
 		file.Append( Logging.File, 
-			string.format( "%s*** Logging Terminated! Reason: %s ***\n", file.Read( Logging.File, "DATA" ), message )
+			string.format( "%s*** Logging Terminated! Reason: %s ***", file.Read( Logging.File, "DATA" ), message )
 		)
 		Logging.CreateLog() -- Close the current logging method and start a new file
 	else
@@ -38,9 +47,4 @@ function _loadmodule( location )
 			Logging.AddLog( "| + Pococraft Base: Failed to load module \"" .. module .. "\"!" )
 		end
 	end
-end
-
-function _startloading()
-	_loadmodule( "pococraft_base/modules/all/*" )
-	_loadmodule( "pococraft_base/modules/" .. tostring( GetConVar("hostport"):GetInt() ) .. "/*" )
 end

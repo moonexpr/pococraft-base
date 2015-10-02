@@ -42,4 +42,5 @@ function GenerateTeleporter()
 	
 	PlaySound(EntsList.TeleporterBall)
 	ParticleAdd(EntsList.TeleporterBall)
+	
 end
