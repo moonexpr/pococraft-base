@@ -44,6 +44,7 @@ function ENT:Initialize()
 	if ( SERVER ) then
 
 		self:SetModel( Model("models/dav0r/hoverball.mdl") )
+		self:PhysicsInitSphere( 20, "solidmetal" )
 	
 	end
 	

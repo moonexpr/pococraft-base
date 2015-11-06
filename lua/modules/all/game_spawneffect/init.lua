@@ -7,7 +7,7 @@ end
 
 util.AddNetworkString( "PP:PlayerSpawnEffect" )
 
-AddCSLuaFile( "/pococraft_base/modules/all/game_spawneffect/cl_networking.lua" )
+AddCSLuaFile( "modules/all/game_spawneffect/cl_networking.lua" )
 
 hook.Add( "PlayerDeath", "BeginEffect", function( ply )
 	net.Start("PP:PlayerSpawnEffect")
