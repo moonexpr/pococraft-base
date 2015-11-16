@@ -14,10 +14,6 @@ if SERVER then
 		if time == (ply.AFK_Time or 0) then return end
 		
 		ply.AFK_Time = time
-		umsg.Start("AFK")
-			umsg.Entity(ply)
-			umsg.Float(time)
-		umsg.End()
 		
 		local msg
 		if time != 0 then
@@ -28,7 +24,7 @@ if SERVER then
 		for _,pl in pairs(player.GetAll()) do
 			if pl != ply then
 				pl:SendLua("notification.AddLegacy( [[" .. msg .. "]], NOTIFY_GENERIC, 5 )")
-				pl:SendLua("surface.PlaySound(\"garrysmod/content_downloaded.wav\")")
+				pl:SendLua("surface.PlaySound(\"ambient/water/drip" .. math.random(1, 4)..".wav\")")
 			end
 		end
 	end
@@ -61,24 +57,4 @@ if SERVER then
 			end
 		end
 	end)
-end
-
-if CLIENT then
-	
-	usermessage.Hook("AFK", function(um)
-		local ply = um:ReadEntity()
-		local time = um:ReadFloat()
-		ply.AFK_Time = time
-	end)
-	
-	local meta = FindMetaTable("Player")
-	local oldName = meta.Name
-	
-	local function Name(ply)
-		if tobool(ply.AFK_Time) then
-			return "[AFK] "..oldName(ply)
-		else
-			return oldName(ply)
-		end
-	end
 end

@@ -23,7 +23,7 @@ function ChatFilter( ply, text, team )
 	local function SendMessage( sender, ext )
 		for _, ply in pairs( ents.FindInSphere(sender:GetPos(), 750) ) do
 			if ply:IsPlayer() and ply:Alive() then
-				ply:SendLua( string.format( "chat.AddText( Color( 200, 0, 100 ), \"%s\", Color( 255, 255, 255 ), \" %ss\" )", sender:Nick(), ext ) )
+				ply:SendLua( string.format( "chat.AddText( Color( 150, 0, 250 ), \"%s\", Color( 255, 255, 255 ), \" %ss\" )", sender:Nick(), ext ) )
 			end
 		end
 	end

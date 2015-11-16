@@ -1,26 +1,16 @@
 function PlaySound( ent )
-	local function PickSong()
-		if tobool(math.random( 0, 1 )) then
-			ent:EmitSound( "coaster_sonic_the_carthog.mp3" )
-		else
-			for _, ply in pairs(player.GetAll()) do 
-				ply:SendLua([[
-					sound.PlayURL( "]] .. table.Random( URLList ) .. [[", "3d", function (media)
-						media:SetPos(]], ent:GetPos(), [[) )
-						media:SetVolume( 1 )
-						media:Set3DFadeDistance( 800, 8000 )
-						media:Play()
-					end )
-				]])
-			end
-		end
-	end
-	PickSong()
-	timer.Create( "Teleporer_Emitsound", 2 * 60, 0, function ()
-		PickSong()
-		timer.Start("Teleporer_Emitsound")
+	--if tobool(math.random(0, 1)) then
+		local SelectedSong = table.Random(URLList)
+		net.Start("ServerTeleporterHTTP")
+			net.WriteString(SelectedSong)
+			net.WriteEntity(ent)
+		net.Broadcast()
+	--else
+	--	ent:EmitSound( "coaster_sonic_the_carthog.mp3" )
+	--end
+	timer.Simple(2 * 60, function ()
+		PlaySound()
 	end )
-	
 end
 
 function ParticleAdd( ent )
@@ -53,8 +43,9 @@ function PortalPlayer( ply )
 	
 	ply:ScreenFade( SCREENFADE.OUT, color_black, 5, 6 )
 	
-	timer.Simple( 5, function()
+	timer.Simple(5, function()
+		local cl_lua = string.format("LocalPlayer():ConCommand(\"connect %s\")", ply:GetPData("TeleporterAddress", "72.14.181.134:27120"))
 		ply:EmitSound( "ambient/energy/whiteflash.wav", 150, 100, 1, CHAN_AUTO )
-		ply:SendLua([[LocalPlayer():ConCommand("connect 72.14.181.134:27120")]])
+		ply:SendLua(cl_lua)
 	end)
 end
