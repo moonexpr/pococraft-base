@@ -14,7 +14,8 @@ TauntsList = {
 	salute = true,
 	wave = "vo/npc/male01/hellodrfm0" .. math.random(1, 2) .. ".wav",
 	forward = true,
-	per = true,
+	group = true,
+	halt = true,
 }
 
 

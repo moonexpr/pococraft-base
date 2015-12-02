@@ -5,7 +5,6 @@ function TestSuccess( result )
 	return true
 end
 
-
 function CheckBan(SteamID)
 	if ULib.bans[ SteamID ] != nil then
 		return true
@@ -14,8 +13,22 @@ function CheckBan(SteamID)
 	end	
 end
 
+function PlayerUsernames()
+	struct = {}
+	for _, ply in pairs(player.GetAll()) do
+		struct[ply:SteamID64()] = ply:Nick()
+	end
+	return struct
+end
+
+NetworkBannedAccounts = {
+	
+}
+
 EEPConfig ={
+	UnknownMessage = "                        Unknown Error (-1, 9E)                        --------------------------------------------------------------------   ♣ To fix this please visit us @ forums.pococraft.org ♣   ",
 	BannedMessage = "                        You have been banished                        --------------------------------------------------------------------   ♣ To appeal to this visit us at forums.pococraft.org ♣   ",
+	BadNameMessage = "                             Bad Username                             --------------------------------------------------------------------  ♣ Change your name as it interferes with our systems ♣  ",
 	LockedMessage = "Sorry, This server is dedicated to the development of the Christmas Update.",
 	FailedToJoinSFX = "buttons/button2.wav",
 }
@@ -34,6 +47,12 @@ hook.Add("PostGamemodeLoaded", "", function()
 		elseif CheckBan( util.SteamIDFrom64( SteamID64 ) ) then
 			PrintError( "SERVER_BANNED", ClientName, SteamID64 )
 			return false, EEPConfig.BannedMessage
+		elseif table.HasValue(PlayerUsernames(), ClientName) then
+			PrintError( "CLIENT_BADNAME", ClientName, SteamID64 )
+			return false, EEPConfig.BadNameMessage
+		elseif table.HasValue(NetworkBannedAccounts, util.SteamIDFrom64(SteamID64)) then
+			PrintError( "SERVER_NETWORK_FAIL", ClientName, SteamID64 )
+			return false, EEPConfig.UnknownMessage
 		else
 			return true
 		end

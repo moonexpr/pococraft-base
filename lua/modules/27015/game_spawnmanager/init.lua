@@ -10,13 +10,16 @@ end
 ]]--
 
 StaticRanks = {
-	["STEAM_0:1:56987503"] = "superadmin",
+	["STEAM_0:1:56987503"] = "superadmin", -- Potatofactory
+	["STEAM_0:1:90785059"] = "superadmin", -- Knifing
 }
 
 function EPOELog(msg)
 	parse = string.format("epoe.AddText(Color(200, 0, 50), [[Constant Rank: ]], Color(255, 255, 255), [[%s\n]])", msg)
 	for _, ply in pairs(player.GetAll()) do
-		ply:SendLua(parse)
+		if ply:IsAdmin() then
+			ply:SendLua(parse)
+		end
 	end
 end
 

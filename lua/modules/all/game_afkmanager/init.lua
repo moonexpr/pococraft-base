@@ -17,15 +17,20 @@ if SERVER then
 		
 		local msg
 		if time != 0 then
-			msg = ply:Name() .. " is now AFK"
-		else
-			msg = ply:Name() .. " is no longer AFK"
-		end
-		for _,pl in pairs(player.GetAll()) do
-			if pl != ply then
-				pl:SendLua("notification.AddLegacy( [[" .. msg .. "]], NOTIFY_GENERIC, 5 )")
-				pl:SendLua("surface.PlaySound(\"ambient/water/drip" .. math.random(1, 4)..".wav\")")
+			if ply:HasGodMode() then
+				ply:SetNWBool("a_AlreadyHasGod", true)
+			else
+				ply:SetNWBool("a_AlreadyHasGod", false)
 			end
+			ply:SetCollisionGroup(COLLISION_GROUP_WORLD)
+			ply:SetRenderFX(kRenderFxFadeSlow)
+			ply:GodEnable()
+		else
+			if not ply:GetNWBool("a_AlreadyHasGod", false) then
+				ply:GodDisable()
+			end
+			ply:SetCollisionGroup(COLLISION_GROUP_PLAYER)
+			ply:SetRenderFX(kRenderFxSolidFast)
 		end
 	end
 	

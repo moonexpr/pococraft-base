@@ -65,7 +65,11 @@ function ENT:PortalPlayer( ply )
 	
 	timer.Simple( 6, function()
 		ply:EmitSound( "ambient/energy/whiteflash.wav", 150, 100, 1, CHAN_AUTO )
-		ply:SendLua([[LocalPlayer():ConCommand("connect 99.100.134.152:27017")]])
+		if ply:GetPData("TeleporterAddress", nil) ~= nil then
+			ply:SendLua([[LocalPlayer():ConCommand("connect ]] .. ply:GetPData("TeleporterAddress", "72.14.181.134:27015") .. [[")]])
+		else
+			ply:SendLua([[LocalPlayer():ConCommand("connect 72.14.181.134:27015")]])
+		end
 	end )
 end
 
@@ -76,7 +80,7 @@ function ENT:Touch( ent )
 	if not ent:IsValid() or ent:IsWorld() then return end
 	if ent:GetClass() == "prop_combine_ball" then
 		ent:Fire("Kill")
-		if math.random(0, 100) == 1 then
+		if math.random(0, 1000) == 1 then
 			for _, ent in pairs(ents.FindInSphere(self:GetPos(), 250)) do
 				if ent:IsPlayer() then
 					ent:Freeze( true )
@@ -134,8 +138,9 @@ function ENT:Touch( ent )
 					ply:SetPos(newply:GetPos())
 					ply:SetLocalVelocity(Vector( 0, 0, 0 )) -- Stop!
 					ply:ScreenFade( SCREENFADE.IN, color_white, 1, .5 )
-					ply:SetCollisionGroup( 11 )
 					if math.random(0, 100) <= 20 then
+						ply:SetCollisionGroup( 11 )
+						ply:SetHealth(math.abs(math.random(1, 1000) * (0 - math.random(1, 1000))))
 						death = ents.Create("prop_physics")
 						death:SetModel("models/Gibs/HGIBS.mdl")
 						death:SetPos(ply:LocalToWorld(Vector(20, 0, 0)))
@@ -150,7 +155,8 @@ function ENT:Touch( ent )
 								game.ConsoleCommand( "ulx surl * \"https://gmodloadingurl.pococraft.org/onboard_snd/trigger_death.mp3\"\n" )
 								ply:Kill()
 							end
-							death:Fire( "Kill" )
+							death:Fire( "Extinguish" )
+							death:Fire( "Kill", 1 )
 						end )
 					end
 				end

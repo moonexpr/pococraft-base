@@ -1,16 +1,14 @@
-function PlaySound( ent )
+function PlaySound()
 	--if tobool(math.random(0, 1)) then
 		local SelectedSong = table.Random(URLList)
 		net.Start("ServerTeleporterHTTP")
 			net.WriteString(SelectedSong)
-			net.WriteEntity(ent)
+			net.WriteVector(EntsList.TeleporterBall:GetPos())
 		net.Broadcast()
 	--else
 	--	ent:EmitSound( "coaster_sonic_the_carthog.mp3" )
 	--end
-	timer.Simple(2 * 60, function ()
-		PlaySound()
-	end )
+	timer.Simple(5 * 60, PlaySound)
 end
 
 function ParticleAdd( ent )
