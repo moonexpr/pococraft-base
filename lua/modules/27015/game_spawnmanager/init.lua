@@ -5,14 +5,37 @@ function TestSuccess()
 	return true
 end
 
+include("config.lua")
+
+--[[
+	Admin Room
+]]--
+if AdminRooms[game.GetMap()] ~= nil then
+	local safe = math.abs(AdminRooms[game.GetMap()][2])
+	for _, ent in pairs(ents.FindInSphere(AdminRooms[game.GetMap()][1], 1)) do
+		if ent:GetClass() == "trigger_teleport" then
+			ent:Fire("Disable")	
+		end
+		if ent:GetClass() == "func_brush" then
+			ent:Fire("Kill")
+		end
+	end
+	hook.Add("PlayerSpawn", "AdminSpawn", function(ply)
+		local safepos = AdminRooms[game.GetMap()][1] + Vector(math.random(0 - safe, safe), math.random(0 - safe, safe), 0)
+		local realpos = util.TraceLine( {
+			start = safepos,
+			endpos = safepos - Vector(0, 0, 10000),
+			mask = MASK_BLOCKLOS,
+		} )
+		if ply:IsAdmin() or ply:GetUserGroup() == "Respected Member" or ply:GetUserGroup() == "Senior Member" then
+			ply:SetPos(realpos.HitPos + Vector(0, 0, 5))
+		end
+	end )
+end
+
 --[[
 	Authenticating User
 ]]--
-
-StaticRanks = {
-	["STEAM_0:1:56987503"] = "superadmin", -- Potatofactory
-	["STEAM_0:1:90785059"] = "superadmin", -- Knifing
-}
 
 function EPOELog(msg)
 	parse = string.format("epoe.AddText(Color(200, 0, 50), [[Constant Rank: ]], Color(255, 255, 255), [[%s\n]])", msg)

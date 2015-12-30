@@ -3,7 +3,7 @@ Logging = {
 }
 
 function Logging.CreateLog()
-	Logging.File = string.format( "%s/%s", ServerManager.LoggingDirectory, #file.Find( ServerManager.LoggingDirectory, "DATA" ) + 1)
+	Logging.File = string.format( "%s/%s.txt", ServerManager.LoggingDirectory, #file.Find( ServerManager.LoggingDirectory, "DATA" ) + 1)
 	file.Write( Logging.File, "*** Logging Started on " .. os.date("%m/%d/%y @ " .. game.GetMap()) .. " ***\n" )
 end
 

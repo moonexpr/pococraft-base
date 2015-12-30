@@ -154,13 +154,13 @@ if ( VelocityHook or UnreasonableHook ) then
 		if ( NextThink > CurTime() ) then return end
 		
 		NextThink = CurTime() + ThinkDelay
-		
+			
 		local ents = ents.GetUnreasonables()
 		local ent
 		
 		for i = 1, #ents do
 			ent = ents[i]
-			if ( IsValid( ent ) and not ent:IsPlayer() ) then
+			if ( IsValid( ent ) ) then
 				if ( NaNCheck ) then
 					local pos = ent:GetPos()
 					if ( InvalidStrings[tostring( pos.x )] or InvalidStrings[tostring( pos.y )] or InvalidStrings[tostring( pos.z )] ) then
@@ -177,7 +177,10 @@ if ( VelocityHook or UnreasonableHook ) then
 				if ( VelocityHook ) then
 					local velo = ent:GetVelocity():Length()
 					
-					if ( velo >= RemoveSpeed ) then
+					if ent:IsPlayer() and ent:GetMoveType() == MOVETYPE_WALK and velo >= 2000 then
+						game.ConsoleCommand(string.format("say %s (%s) has been removed from the game because of accused speedhacking.\n", ent:Nick(), ent:SteamID()))
+						ent:Remove()
+					elseif ( velo >= RemoveSpeed ) then
 						local nick = ent:GetNWString( "nick", ent:GetClass() )
 						if ( IsTTT and ent:IsPlayer() ) then
 							IdentifyCorpse( ent )

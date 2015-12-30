@@ -26,7 +26,7 @@ NetworkBannedAccounts = {
 }
 
 EEPConfig ={
-	UnknownMessage = "                        Unknown Error (-1, 9E)                        --------------------------------------------------------------------   ♣ To fix this please visit us @ forums.pococraft.org ♣   ",
+	UnknownMessage = "                        Unknown Error (-1, 1E)                        --------------------------------------------------------------------   ♣ To fix this please visit us @ forums.pococraft.org ♣   ",
 	BannedMessage = "                        You have been banished                        --------------------------------------------------------------------   ♣ To appeal to this visit us at forums.pococraft.org ♣   ",
 	BadNameMessage = "                             Bad Username                             --------------------------------------------------------------------  ♣ Change your name as it interferes with our systems ♣  ",
 	LockedMessage = "Sorry, This server is dedicated to the development of the Christmas Update.",

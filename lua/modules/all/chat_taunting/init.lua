@@ -7,6 +7,7 @@ TauntsList = {
 	muscle = true,
 	zombie = "npc/fast_zombie/fz_frenzy1.wav",
 	robot = true,
+	bow = "vo/npc/male01/pardonme01.wav",
 	dance = true,
 	agree = "vo/npc/male01/yeah02.wav",
 	becon = "vo/Citadel/al_comegordon.wav",
@@ -16,6 +17,7 @@ TauntsList = {
 	forward = true,
 	group = true,
 	halt = true,
+	pers = true,
 }
 
 
@@ -24,7 +26,11 @@ function ChatFilter( ply, text, team )
 	local function SendMessage( sender, ext )
 		for _, ply in pairs( ents.FindInSphere(sender:GetPos(), 750) ) do
 			if ply:IsPlayer() and ply:Alive() then
-				ply:SendLua( string.format( "chat.AddText( Color( 150, 0, 250 ), \"%s\", Color( 255, 255, 255 ), \" %ss\" )", sender:Nick(), ext ) )
+				if ext == "pers" then
+					ply:SendLua( string.format( "chat.AddText( Color( 150, 0, 250 ), \"%s\", Color( 255, 255, 255 ), \" turned into a ninja!\" )", sender:Nick() ) )
+				else
+					ply:SendLua( string.format( "chat.AddText( Color( 150, 0, 250 ), \"%s\", Color( 255, 255, 255 ), \" %ss\" )", sender:Nick(), ext ) )
+				end
 			end
 		end
 	end
@@ -46,6 +52,20 @@ function ChatFilter( ply, text, team )
 				end
 			end
 			return false
+		elseif string.find(taunt, "/advert") == 1 then
+			if string.byte(taunt, 8, 8) == 32 then
+				message = string.gsub(taunt, "/advert ", "")
+			else
+				message = string.gsub(taunt, "/advert", "")
+			end
+			if message ~= "" then
+				code = string.format("notification.AddLegacy( \"%s: %s\", NOTIFY_GENERIC, %i )", ply:Nick(), message, math.Round(math.Clamp(string.len(message) / 5, 3, 10)))
+				for _, pl in pairs(player.GetAll()) do
+					pl:SendLua(code)
+					pl:SendLua("surface.PlaySound(\"buttons/button15.wav\")")
+				end
+			end
+			return ":information: " .. message
 		else
 			return taunt
 		end

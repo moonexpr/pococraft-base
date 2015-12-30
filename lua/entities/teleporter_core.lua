@@ -23,6 +23,8 @@ function ENT:SpawnFunction( ply, tr, ClassName )
 	
 end
 
+TeleporteredPlayers = {}
+
 --[[---------------------------------------------------------
    Name: Initialize
 -----------------------------------------------------------]]
@@ -63,8 +65,11 @@ function ENT:PortalPlayer( ply )
 	
 	ply:ScreenFade( SCREENFADE.OUT, color_black, 5, 6 )
 	
+	TeleporteredPlayers[ply:SteamID()] = true
+
 	timer.Simple( 6, function()
-		ply:EmitSound( "ambient/energy/whiteflash.wav", 150, 100, 1, CHAN_AUTO )
+		if ply == nil then return end
+		self:EmitSound( "ambient/energy/whiteflash.wav", 150, 100, 1, CHAN_AUTO )
 		if ply:GetPData("TeleporterAddress", nil) ~= nil then
 			ply:SendLua([[LocalPlayer():ConCommand("connect ]] .. ply:GetPData("TeleporterAddress", "72.14.181.134:27015") .. [[")]])
 		else
