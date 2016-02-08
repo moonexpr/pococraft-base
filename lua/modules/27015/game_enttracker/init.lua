@@ -176,10 +176,11 @@ if ( VelocityHook or UnreasonableHook ) then
 				
 				if ( VelocityHook ) then
 					local velo = ent:GetVelocity():Length()
-					
-					if ent:IsPlayer() and ent:GetMoveType() == MOVETYPE_WALK and velo >= 2000 then
-						game.ConsoleCommand(string.format("say %s (%s) has been removed from the game because of accused speedhacking.\n", ent:Nick(), ent:SteamID()))
-						ent:Remove()
+					if ent:IsPlayer() and ent:GetMoveType() == MOVETYPE_WALK and ent:IsOnGround() and ent:GetUserGroup() == "user" then
+						local maxspeed = ULib.ucl.groups[ent:GetUserGroup()].team.runSpeed or 500
+						if velo >= maxspeed + 1500 then -- + 1500 compensation
+							ent:Spawn()
+						end
 					elseif ( velo >= RemoveSpeed ) then
 						local nick = ent:GetNWString( "nick", ent:GetClass() )
 						if ( IsTTT and ent:IsPlayer() ) then

@@ -12,8 +12,8 @@
 ]]--
 
 include( "sv_info.lua" )
-include( "sv_modules.lua" )
 include( "sv_security.lua" )
+include( "sv_modules.lua" )
 
 Logging.CreateLog()
 

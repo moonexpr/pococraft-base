@@ -24,13 +24,29 @@ if SERVER then
 			end
 			ply:SetCollisionGroup(COLLISION_GROUP_WORLD)
 			ply:SetRenderFX(kRenderFxFadeSlow)
+
+			if ply:GetActiveWeapon() then
+				ply:GetActiveWeapon():SetColor( Color(255, 255, 255, 0) )
+			end
+
 			ply:GodEnable()
 		else
+
+			for _, ent in pairs(ents.FindInSphere(ply:GetPos(), 1)) do
+				if ent:IsPlayer() and ent ~= ply then
+					ent:Spawn() -- Player trapped, respawn
+				end
+			end
+
 			if not ply:GetNWBool("a_AlreadyHasGod", false) then
 				ply:GodDisable()
 			end
 			ply:SetCollisionGroup(COLLISION_GROUP_PLAYER)
 			ply:SetRenderFX(kRenderFxSolidFast)
+
+			if ply:GetActiveWeapon() == nil then
+				ply:GetActiveWeapon():SetColor( Color(255, 255, 255, 255) )
+			end
 		end
 	end
 	

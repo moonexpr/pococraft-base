@@ -37,6 +37,7 @@ function restartPop()
 		timer.Simple(3, function()
 			game.ConsoleCommand("say Restarting pop data...\n" )
 			timer.Simple(1, function()
+				game.ConsoleCommand("say Remember: Play Smart, Work Hard!\n" )
 				for _, ply in pairs(player.GetAll()) do
 					ply:Kill()
 				end

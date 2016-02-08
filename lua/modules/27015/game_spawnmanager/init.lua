@@ -37,7 +37,7 @@ end
 	Authenticating User
 ]]--
 
-function EPOELog(msg)
+local function EPOELog(msg)
 	parse = string.format("epoe.AddText(Color(200, 0, 50), [[Constant Rank: ]], Color(255, 255, 255), [[%s\n]])", msg)
 	for _, ply in pairs(player.GetAll()) do
 		if ply:IsAdmin() then
@@ -46,17 +46,17 @@ function EPOELog(msg)
 	end
 end
 
-function CheckUser( ply )
+local function CheckUser( ply )
 	if StaticRanks[ply:SteamID()] ~= nil and ply:GetUserGroup() ~= StaticRanks[ply:SteamID()] then
 		local chatstr = "say Rank Mismatch! {user} is suppose to be under {group}\n"
 		local constr = "ulx adduserid {steamid} {group}\n"
 		local constr_remove = "ulx removeuserid {steamid}\n"
 		EPOELog(string.format("%s is in the incorrect usergroup! Moving...", ply:Nick()))
-		game.ConsoleCommand(string.gsub(string.gsub(chatstr, "{user}", ply:Nick()), "{group}", StaticRanks[ply:SteamID()]))
+		game.ConsoleCommand(string.gsub(string.gsub(chatstr, "{user}", ply:Nick()), "{group}", StaticRanks[ply:SteamID()]) .. " \"" .. WeekdayCodes[today] .. " commit 77\"")
 		if StaticRanks[ply:SteamID()] == "user" then
-			game.ConsoleCommand(string.gsub(constr_remove, "{steamid}", ply:SteamID()))
+			game.ConsoleCommand(string.gsub(constr_remove, "{steamid}", ply:SteamID()) .. " \"" .. WeekdayCodes[today] .. " commit 77\"")
 		else
-			game.ConsoleCommand(string.gsub(string.gsub(constr, "{steamid}", ply:SteamID()), "{group}", StaticRanks[ply:SteamID()]))
+			game.ConsoleCommand(string.gsub(string.gsub(constr, "{steamid}", ply:SteamID()), "{group}", StaticRanks[ply:SteamID()]) .. " \"" .. WeekdayCodes[today] .. " commit 77\"")
 		end
 	else
 		EPOELog(string.format("%s is in the correct usergroup! :)", ply:Nick()))
@@ -106,7 +106,7 @@ end)
 	Used for pointing where exactly 'spawn' is
 ]]--
 
-function SpawnModels()
+local function SpawnModels()
 	for k, v in pairs(ents.FindByModel( "models/editor/playerstart.mdl" )) do
 		v:Remove()
 	end
@@ -131,7 +131,9 @@ function SpawnModels()
 
 	hook.Add( "Tick", "Rotate", function()
 		for k, v in pairs(Ents) do
-			v:SetAngles( v:GetAngles() + Angle(	0, 3, 0 ) )
+			if IsValid(v) then
+				v:SetAngles( v:GetAngles() + Angle(	0, 3, 0 ) )
+			end
 		end
 	end )
 end

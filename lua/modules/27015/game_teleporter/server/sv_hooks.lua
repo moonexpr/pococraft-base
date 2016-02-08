@@ -49,6 +49,7 @@ if SERVER then
 
 			hook.Add( "PhysgunPickup", "AttemptToMoveTeleporter", function ( ply, ent )
 				if ent == EntsList.TeleporterBall then
+					game.ConsoleCommand(string.format("say %s has attempted to upset the teleporter Gods, S/He shall be sacrificed!\n", ply:Nick()))
 					PortalPlayer( ply )
 					return false
 				else		
@@ -60,6 +61,7 @@ if SERVER then
 
 			hook.Add("CanDrive", "AttemptToMoveTeleporter", function(ply, ent)
 				if ent == EntsList.TeleporterBall then
+					game.ConsoleCommand(string.format("say %s has attempted to upset the teleporter Gods, S/He shall be sacrificed!\n", ply:Nick()))
 					PortalPlayer( ply )
 					return false
 				else		
@@ -68,6 +70,18 @@ if SERVER then
 					end
 				end
 			end )
+			hook.Add("CanTool", "AttemptToMoveTeleporter", function(ply, tr)
+				if tr.Entity == EntsList.TeleporterBall then
+					game.ConsoleCommand(string.format("say %s has attempted to upset the teleporter Gods, S/He shall be sacrificed!\n", ply:Nick()))
+					PortalPlayer( ply )
+					return false
+				else		
+					if table.HasValue( EntsList, ent ) then
+						return false
+					end
+				end
+			end )
+
 		else
 			include('server_teleporter.lua') -- Backup!
 			ServerLog( "Using backup teleporter !! :(\n")

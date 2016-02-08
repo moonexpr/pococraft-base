@@ -52,11 +52,11 @@ function ChatFilter( ply, text, team )
 				end
 			end
 			return false
-		elseif string.find(taunt, "/advert") == 1 then
+		elseif string.find(taunt, "/advert") == 1 or string.find(taunt, "/a") == 1 then
 			if string.byte(taunt, 8, 8) == 32 then
-				message = string.gsub(taunt, "/advert ", "")
+				message = string.gsub(string.gsub(taunt, "/advert ", ""), "/a ", "")
 			else
-				message = string.gsub(taunt, "/advert", "")
+				message = string.gsub(string.gsub(taunt, "/advert", ""), "/a", "")
 			end
 			if message ~= "" then
 				code = string.format("notification.AddLegacy( \"%s: %s\", NOTIFY_GENERIC, %i )", ply:Nick(), message, math.Round(math.Clamp(string.len(message) / 5, 3, 10)))
@@ -74,7 +74,7 @@ function ChatFilter( ply, text, team )
 	return DoTaunt( text )
 end
 
-hook.Add( "PlayerSay", "", ChatFilter )
+hook.Add( "PlayerSay", "TauntsCheck", ChatFilter )
 
 
 function TestSuccess()
