@@ -1,5 +1,13 @@
-include("keys.lua")
 local today = tonumber(os.date("%u", os.time() - 21600))
+WeekdayCodes = {
+	"", -- Monday
+	"", -- Tuesday
+	"", -- Wedsday
+	"", -- Thursday
+	"", -- Friday
+	"", -- Saturday
+	"", -- Sunday
+}
 SecurityKey = {
 	User 	= WeekdayCodes[today] .. " commit 77",
 	Unban 	= WeekdayCodes[today] .. " commit 77",

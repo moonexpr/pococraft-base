@@ -1,5 +1,3 @@
-easylua.StartEntity("trigger_lua")
-
 ENT.Base 					= "base_entity"
 ENT.Type 					= "brush"
 ENT.Author					= "Potatofactory"
@@ -11,55 +9,97 @@ if SERVER then
 	function ENT:Initialize()
 		self:SetSolid( SOLID_BBOX )
 		self:SetTrigger( true )
+		self.Touching = {}
 		self.AreaData = -- Modify trigger variables after spawning
 		{
 			["Name"] = "Unknown",
+			["Parent"] = false,
 			["Ambience"] = nil,
 			["Building"] = true,
+			["Announce"] = false,
 			["UserGroupRestricted"] = nil,
 			["StartTouchCallback"] = nil,
 			["EndTouchCallback"] = nil,
 		}
 	end
 	function ENT:StartTouch( ent )
+		self.Touching[ent:EntIndex()] = ent
+		local function compileGroups(tab, ignore)
+			local str = ""
+			for k, char in pairs(tab) do
+				if k == 1 then
+					str = char
+				elseif k == #tab then
+					str = str .. " or " ..  char
+				else
+					str = str .. ", " ..  char
+				end
+			end
+			return string.lower(str)
+		end
 		if self.AreaData["StartTouchCallback"] then
 			self.AreaData["StartTouchCallback"]( ent )
 		end
+		
+		if self.AreaData["Parent"] then
+			ent:SetNWEntity("IgnoreParentTrigger", self.AreaData["Parent"])
+		end
+		if ent:GetNWEntity("IgnoreParentTrigger") ~= self then
+			ent:SetLocation(self)
+		end
+
 		if ent:IsPlayer() then
-			ent:SetLocation(self.AreaData["Name"])
-			if self.AreaData["UserGroupRestricted"] and not table.HasValue(self.AreaData["UserGroupRestricted"], ent:GetUserGroup()) then
-				ent:Spawn()
-				ent:Notify(10, "error", "This is an administator only area. :(")
+			if self.AreaData["UserGroupRestricted"] and not table.HasValue(self.AreaData["UserGroupRestricted"], ent:GetUserGroup() == "manager_dev" and "manager" or ent:GetUserGroup()) then
+				ent:Kill()
+				if not ULib.ucl.groups[self.AreaData["UserGroupRestricted"][1]] then
+					ent:Notify(10, "error", self.AreaData["UserGroupRestricted"][1])
+				else
+					ent:Notify(2, "error", "You're not allowed to enter " .. self.AreaData["Name"] .. " :(")
+					ent:Notify(5, "error", "You must be apart of " .. compileGroups(self.AreaData["UserGroupRestricted"]) .. " ")
+				end
 				return
 			end
+			if self.AreaData["Announce"] then
+				if isstring(self.AreaData["Announce"]) then
+					ent:Notify(5, "hint", self.AreaData["Announce"])
+				else
+					ent:Notify(5, "hint", "Now entering " .. self.AreaData["Name"] .. "...")
+				end
+				if not self.AreaData["Building"] then
+					ent:Notify(5, "error", "Building is outlawed in this area!")
+				end
+			end
 			if self.AreaData["Ambience"] then
-				net.Start("TriggerEvent_SafeZone")
+				net.Start("TriggerEvent:AmbientToggle")
 					net.WriteString( self.AreaData["Ambience"] )
 					net.WriteBool( true )
 				net.Send(ent)
 			end
-		elseif ent:CPPIGetOwner() or ent:IsNPC() and self.AreaData["Building"] then
+		elseif not self.AreaData["Building"] and ent:CPPIGetOwner() and not ent:CPPIGetOwner():IsAdmin() and not ent:IsNPC() and ent:GetModel() ~= "models/noesis/donut.mdl" then
 			ent:Remove()
 		end
 	end
 	function ENT:EndTouch( ent )
-		local function FindOutsideBox()
-			local total_ents = ents.FindInSphere(ent:GetPos(), 2)
-			for num, _ent in pairs(total_ents) do
-				if _ent:GetClass() == "trigger_lua" and _ent.AreaData["Name"] ~= self.AreaData["Name"] then
-					return _ent.AreaData["Name"]
-				elseif num == #total_ents then
-					return "Unknown"
-				end
-			end
-		end
+		self.Touching[ent:EntIndex()] = nil
 		if self.AreaData["EndTouchCallback"] then
 			self.AreaData["EndTouchCallback"]( ent )
 		end
+		if self.AreaData["Parent"] then
+			ent:SetNWEntity("IgnoreParentTrigger", nil)
+		end
+
+		if ent:IsInWorld() then
+			if self.AreaData["Parent"] and table.HasValue(self.AreaData["Parent"].Touching, ent) then
+				ent:SetLocation(self.AreaData["Parent"])
+			end
+		else
+			ent:SetLocation("The Void")
+		end
+
 		if ent:IsPlayer() then
-			ent:SetLocation(FindOutsideBox())
+			--print(ent:Nick() .. ": " .. tostring(table.HasValue(self.AreaData["Parent"].Touching, ent)))
 			if self.AreaData["Ambience"] then
-				net.Start("TriggerEvent_SafeZone")
+				net.Start("TriggerEvent:AmbientToggle")
 					net.WriteString( self.AreaData["Ambience"] )
 					net.WriteBool( false )
 				net.Send(ent)
@@ -70,8 +110,6 @@ end
 
 if CLIENT then
 	function ENT:Draw()
-		return false
+		return 
 	end
 end
-
-easylua.EndEntity(false, false)

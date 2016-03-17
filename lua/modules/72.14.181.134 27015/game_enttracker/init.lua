@@ -177,17 +177,24 @@ if ( VelocityHook or UnreasonableHook ) then
 				if ( VelocityHook ) then
 					local velo = ent:GetVelocity():Length()
 					if ent:IsPlayer() and ent:GetMoveType() == MOVETYPE_WALK and ent:IsOnGround() and ent:GetUserGroup() == "user" then
+						local nick = ent:Nick()
 						local maxspeed = ULib.ucl.groups[ent:GetUserGroup()].team.runSpeed or 500
 						if velo >= maxspeed + 1500 then -- + 1500 compensation
 							ent:Spawn()
+							local message = "Respawned player " .. nick .. " for moving too fast (Run Speed: " .. velo .. " UPS, Max: " .. maxspeed .. ", Compensation: 1500 UPS )"
+							ServerLog( message .. "\n" )
+							if ( EchoRemove ) then
+								EPOELog( message )
+							end
 						end
 					elseif ( velo >= RemoveSpeed ) then
 						local nick = ent:GetNWString( "nick", ent:GetClass() )
+						local owner = IsValid(ent:CPPIGetOwner()) and ent:CPPIGetOwner():IsPlayer() and "player: " .. ent:CPPIGetOwner():Nick() or tostring(ent:CPPIGetOwner()) or "world"
 						if ( IsTTT and ent:IsPlayer() ) then
 							IdentifyCorpse( ent )
 						end
 						ent:Remove()
-						local message = "Removed " .. nick .. " for moving too fast" .. " (" .. velo .. " UPS )"
+						local message = "Removed " .. nick .. " (owned by " .. owner .. ") for moving too fast" .. " (" .. velo .. " UPS )"
 						ServerLog( message .. "\n" )
 						if ( EchoRemove ) then
 							EPOELog( message )
@@ -195,8 +202,9 @@ if ( VelocityHook or UnreasonableHook ) then
 					elseif ( velo >= FreezeSpeed ) then
 						ent:CollisionRulesChanged()
 						local nick = ent:GetNWString( "nick", ent:GetClass() )
+						local owner = IsValid(ent:CPPIGetOwner()) and ent:CPPIGetOwner():IsPlayer() and "player: " .. ent:CPPIGetOwner():Nick() or tostring(ent:CPPIGetOwner()) or "world"
 						KillVelocity( ent )
-						local message = "Froze " .. nick .. " for moving too fast" .. " (" .. velo .. " UPS )"
+						local message = "Froze " .. nick .. " (owned by " .. owner .. ") for moving too fast" .. " (" .. velo .. " UPS )"
 						ServerLog( message .. " (" .. velo .. ") \n" )
 						if ( EchoFreeze ) then
 							EPOELog( message )

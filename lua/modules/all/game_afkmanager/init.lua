@@ -23,9 +23,9 @@ if SERVER then
 				ply:SetNWBool("a_AlreadyHasGod", false)
 			end
 			ply:SetCollisionGroup(COLLISION_GROUP_WORLD)
-			ply:SetRenderFX(kRenderFxFadeSlow)
+			--ply:SetRenderFX(kRenderFxFadeSlow)
 
-			if ply:GetActiveWeapon() then
+			if IsValid(ply:GetActiveWeapon()) then
 				ply:GetActiveWeapon():SetColor( Color(255, 255, 255, 0) )
 			end
 
@@ -42,9 +42,9 @@ if SERVER then
 				ply:GodDisable()
 			end
 			ply:SetCollisionGroup(COLLISION_GROUP_PLAYER)
-			ply:SetRenderFX(kRenderFxSolidFast)
+			--ply:SetRenderFX(kRenderFxSolidFast)
 
-			if ply:GetActiveWeapon() == nil then
+			if IsValid(ply:GetActiveWeapon()) == nil then
 				ply:GetActiveWeapon():SetColor( Color(255, 255, 255, 255) )
 			end
 		end
@@ -58,11 +58,21 @@ if SERVER then
 	hook.Add("PlayerInitialSpawn", "Anti-AFK - Player Join", SetActivity)
 	hook.Add("KeyPress", "Anti-AFK - Player Key Press", SetActivity)
 	hook.Add("KeyRelease", "Anti-AFK - Player Key Release", SetActivity)
-	hook.Add("PlayerSay", "Anti-AFK - Player Chat", SetActivity)
 	
 	hook.Add("Tick", "Anti-AFK Tick", function()
 		local cur_time = CurTime()
-		for _,ply in pairs(player.GetAll()) do		
+		for _,ply in pairs(player.GetAll()) do
+			--if ply:IsTimingOut() then
+			--	if not ply.TimeoutTime then
+			--		ply.TimeoutTime = CurTime()
+			--	end
+			--	if CurTime() - ply.TimeoutTime > 10 then
+			--		ulx.kick(game.GetWorld(), ply, "Timed Out")
+			--	end
+			--elseif ply.TimeoutTime then
+			--	ply.TimeoutTime = nil
+			--end
+
 			local angles = ply:GetAngles()
 			if ply.LastAngles != angles then
 				ply.LastAngles = angles

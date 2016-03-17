@@ -7,18 +7,18 @@ end
 
 
 DisconnectReasons = {
-	["Disconnect by user."] = "walked out of <c=150,0,250>Club Random</c>",
+	["Disconnect by user."] = "walked out of <color=150,0,250>Club Random",
 	["Client left game (Steam auth ticket has been canceled)"] = "left because of a Steam mishap.",
 	["Too many warnings"] = "reached the warning limit!",
-	["Connection closing"] = "lost connection to <c=150,0,250>Club Random</c>",
-	["timed out"] = "has crashed and left <c=150,0,250>Club Random</c>",
+	["Connection closing"] = "lost connection to <color=150,0,250>Club Random",
+	["timed out"] = "has crashed and left <color=150,0,250>Club Random",
 	["(manager)"] = "was removed from the game by a Manager",
 	["(Administrator)"] = "was removed from the game by an Administrator",
 	["You are banished"] = "was banished from this realm",
-	["Vote kick successful."] = "was voted out of <c=150,0,250>Club Random</c>",
+	["Vote kick successful."] = "was voted out of <color=150,0,250>Club Random",
 	["Ejected from our world"] = "fell into a black hole",
 	["#DisconnectUnknown"] = "left because of a Steam mishap.",
-	["#DisconnectTeleporter"] = "has teleported away from <c=150,0,250>Club Random</c>"
+	["#DisconnectTeleporter"] = "has teleported away from <color=150,0,250>Club Random"
 }
 
 hook.Add( "PlayerInitialSpawn", "AnnouncePlayer", function( player_object )
@@ -36,37 +36,46 @@ hook.Add( "PlayerInitialSpawn", "AnnouncePlayer", function( player_object )
 		http.Fetch("http://ip-api.com/json/" .. noport(player_object:IPAddress()),
 		function(body)
 			if player_object.origin == nil then
-				player_object.origin = util.JSONToTable(body)['country']
+				local tab = util.JSONToTable(body)
+				player_object.origin = tab['country']
+				player_object.flag = "flags16/" .. string.lower(tab['countryCode']) .. ".png"
 			end
 		end,
 		function()
-			player_object.origin = "Earth"
+			player_object.origin = "Unknown"
+			player_object.flag = "icon16/vcard.png"
 		end)
 	else
-		player_object.origin = "the server"
+		player_object.origin = "Server Farm"
+		player_object.flag = "icon16/server.png"
 	end
-	if player_object.origin == nil then
-		player_object.origin = "Earth"
-	end
-	local customurl = player_object:GetPData("CustomPlayerSFX", "null")
-	if player_object:IsAdmin() and player_object:IsValid() then
-		PrintMessage( HUD_PRINTTALK, string.format("<avatar=%s> <hsv>%s (Staff Member)</hsv> has entered <c=150,0,250>Club Random</c> from %s", player_object:SteamID(), player_object:Nick(), player_object.origin ) )
-	else
-		if player_object:SteamID() == "BOT" then
-			PrintMessage( HUD_PRINTTALK, string.format("<avatar=%s> <hsv>%s (%s)</hsv> has entered <c=150,0,250>Club Random</c> from %s", "STEAM_0:1:18712009", player_object:Nick(), player_object:SteamID(), player_object.origin ) )
-		else
-			PrintMessage( HUD_PRINTTALK, string.format("<avatar=%s> <hsv>%s (%s)</hsv> has entered <c=150,0,250>Club Random</c> from %s", player_object:SteamID(), player_object:Nick(), player_object:SteamID(), player_object.origin ) )
+	timer.Simple( 1, function()
+		if player_object.origin == nil then
+			player_object.origin = "Unknown"
 		end
-	end
-	local defaultsound = string.format("surface.PlaySound(\"garrysmod/save_load%i.wav\")", math.random(1, 4))
-	local customsound = string.format("sound.PlayURL(\"%s\", \"3D\", function(channel) channel:SetPos(%i, %i, %i) channel:Play() end)", customurl, player_object:GetPos().X, player_object:GetPos().Y, player_object:GetPos().Z )
-	for _, ply in pairs(player.GetAll()) do
-		if customurl == "null" then
-			ply:SendLua( defaultsound )
-		else
-			ply:SendLua( customsound )
+		if not file.Exists("materials/" .. player_object.flag, "GAME") then
+			player_object.flag = "icon16/vcard.png"
 		end
-	end
+		local customurl = player_object:GetPData("CustomPlayerSFX", "null")
+		if player_object:IsAdmin() and player_object:IsValid() then
+			ChatAddText( "<texture=" .. player_object.flag .."> <hsv=[t()*100]>" .. player_object:Nick() ..  " (Staff Member)", Color(255, 255, 255), " has entered ", Color(150, 0, 250), "Club Random" )
+		else
+			if player_object:SteamID() == "BOT" then
+				ChatAddText( "<texture=" .. player_object.flag .."> <hsv=[t()*100]>" .. player_object:Nick(), Color(255, 255, 255), " has entered ", Color(150, 0, 250), "Club Random" )
+			else
+				ChatAddText( "<texture=" .. player_object.flag .."> <hsv=[t()*100]>" .. player_object:Nick() ..  " (" .. player_object:SteamID() .. ")", Color(255, 255, 255), " has entered ", Color(150, 0, 250), "Club Random" )
+			end
+		end
+		local defaultsound = string.format("surface.PlaySound(\"garrysmod/save_load%i.wav\")", math.random(1, 4))
+		local customsound = string.format("sound.PlayURL(\"%s\", \"3D\", function(channel) channel:SetPos(Vector(%i, %i, %i)) channel:Play() end)", customurl, player_object:GetPos().X, player_object:GetPos().Y, player_object:GetPos().Z )
+		for _, ply in pairs(player.GetAll()) do
+			if customurl == "null" then
+				ply:SendLua( defaultsound )
+			else
+				ply:SendLua( customsound )
+			end
+		end
+	end )
 end )
 
 gameevent.Listen("player_disconnect")
@@ -75,7 +84,7 @@ hook.Add("player_disconnect", "atlaschat.DisconnectMessage", function(data)
 	local function LookupReason( reason )
 		local strReason = nil
 		for seed, string in pairs(DisconnectReasons) do
-			if string.find(reason, seed) then
+			if string.find(string.lower(reason), string.lower(seed)) then
 				strReason = string
 				break
 			end
@@ -89,11 +98,11 @@ hook.Add("player_disconnect", "atlaschat.DisconnectMessage", function(data)
 	if table.HasValue(DisconnectReasons, data.reason) or strReason ~= nil then
 		if TeleporteredPlayers ~= nil and TeleporteredPlayers[data.networkid] then
 			TeleporteredPlayers[data.networkid] = false
-			PrintMessage( HUD_PRINTTALK, string.format("<avatar=%s> <c=0,150,150>%s</c> %s", data.networkid, data.name, DisconnectReasons["#DisconnectTeleporter"]) )
+			ChatAddText( Color(0, 150, 150), data.name, Color(255, 255, 255), " " .. DisconnectReasons["#DisconnectTeleporter"] )
 		else
-			PrintMessage( HUD_PRINTTALK, string.format("<avatar=%s> <c=0,150,150>%s</c> %s", data.networkid, data.name, strReason) )
+			ChatAddText( Color(0, 150, 150), data.name, Color(255, 255, 255), " " .. strReason )
 		end
 	else
-		PrintMessage( HUD_PRINTTALK, string.format("<avatar=%s> <c=0,150,150>%s</c> %s", data.networkid, data.name, DisconnectReasons["#DisconnectUnknown"]) )
+		ChatAddText( Color(0, 150, 150), data.name, Color(255, 255, 255), " " .. DisconnectReasons["#DisconnectUnknown"] )		
 	end
 end)

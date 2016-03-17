@@ -14,6 +14,8 @@ function PlayerUsernames()
 	return struct
 end
 
+RelocatedPlayers = {}
+
 NetworkBannedAccounts = {
 	
 }
@@ -31,7 +33,7 @@ hook.Add("PostGamemodeLoaded", "", function()
 
 		function PrintError( Message, ClientName, SteamID64, BanExtra )
 			ServerLog( "[EVENT] " ..ClientName .. " (" .. util.SteamIDFrom64( SteamID64 ) .. ") attempted to join the game, but recieved the error code " .. Message .. ".\n" )
-			PrintMessage( HUD_PRINTTALK, string.format( "<avatar=%s> <hsv>%s (%s)</hsv> failed to join the server: <c=200,0,50>%s</c>", util.SteamIDFrom64( SteamID64 ), ClientName, util.SteamIDFrom64( SteamID64 ), Message ) )
+			PrintMessage( HUD_PRINTTALK, string.format( "<hsv>%s (%s)<color=255,255,255> failed to join the server: <color=200,0,50>%s", ClientName, util.SteamIDFrom64( SteamID64 ), Message ) )
 			BroadcastLua( "surface.PlaySound(\"buttons/button2.wav\")" )
 		end
 		if ServerPass != "" and ServerPass != ClientPass then
@@ -40,8 +42,9 @@ hook.Add("PostGamemodeLoaded", "", function()
 		elseif ULib.bans[ util.SteamIDFrom64( SteamID64 ) ] ~= nil then
 			local strReason = ULib.bans[ util.SteamIDFrom64( SteamID64 ) ].reason or "Unknown Reason"
 			local strAdmin = ULib.bans[ util.SteamIDFrom64( SteamID64 ) ].admin or "pococraft.org"
-			PrintMessage( HUD_PRINTTALK, string.format( ":information: \"%s\" - <c=200,0,0>%s</c>", strReason, strAdmin ) )
+			PrintMessage( HUD_PRINTTALK, string.format( ":information: \"%s\" - <color=200,0,0>%s", strReason, strAdmin ) )
 			PrintError( "SERVER_BANNED", ClientName, SteamID64 )
+			RelocatedPlayers[SteamID64] = true
 			return false, EEPConfig.BannedMessage
 		elseif table.HasValue(PlayerUsernames(), ClientName) then
 			PrintError( "CLIENT_BADNAME", ClientName, SteamID64 )
@@ -53,5 +56,17 @@ hook.Add("PostGamemodeLoaded", "", function()
 			return true
 		end
 
+	end
+end)
+
+hook.Add("PlayerInitialSpawn", "RelocatePlayers", function( ply )
+	if RelocatedPlayers[ply:SteamID64()] then
+		RelocatedPlayers[ply:SteamID64()] = false
+		ply:ConCommand("connect xenora.net:27018")
+		timer.Simple(1, function()
+			if ply and IsValid(ply) then
+				ply:Kick("You're not allowed here anymore.")
+			end
+		end)
 	end
 end)

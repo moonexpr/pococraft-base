@@ -15,14 +15,36 @@ include( "sv_info.lua" )
 include( "sv_security.lua" )
 include( "sv_modules.lua" )
 
-Logging.CreateLog()
+--Logging.CreateLog()
 
 runtime = os.time()
+PococraftModules = {}
 
-Logging.AddLog( "Pococraft Base [Version " .. ServerManager.Version .. "] (c) 2015 PocoCraft. All Rights Reserved." )
-Logging.AddLog( "Authors: " .. ServerManager.Contributors )
+print( "Pococraft Base [Version " .. ServerManager.Version .. "] (c) 2015 PocoCraft. All Rights Reserved." )
+print( "Authors: " .. ServerManager.Contributors )
 
 _loadmodule( "modules/all/*" )
-_loadmodule( "modules/" .. tostring( GetConVar("hostport"):GetInt() ) .. "/*" )
+_loadmodule( "modules/" .. tostring( string.gsub(game.GetIPAddress(), ":", " ") ) .. "/*" )
 
-Logging.AddLog( "Pococraft Base Finished (Loaded in " .. os.time() - runtime .. " seconds!)")
+print( "Pococraft Base Finished (Loaded in " .. os.time() - runtime .. " seconds!)")
+
+function ReloadBaseModules()
+	BroadcastLua([[
+		notification.AddProgress( "PococraftLoad", "Reloading the Pococraft Base modules and plugins..." )
+	]])
+
+	PococraftModules = {}
+
+	include( "sv_info.lua" )
+	include( "sv_security.lua" )
+	include( "sv_modules.lua" )
+
+	_loadmodule( "modules/all/*" )
+	_loadmodule( "modules/" .. tostring( string.gsub(game.GetIPAddress(), ":", " ") ) .. "/*" )
+
+	timer.Simple(1, function()
+	BroadcastLua([[
+		notification.Kill( "PococraftLoad" )
+	]])
+	end)
+end

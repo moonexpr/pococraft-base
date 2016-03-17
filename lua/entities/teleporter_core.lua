@@ -10,6 +10,8 @@ ENT.Category		= "Editors"
 
 ENT.Spawnable		= false
 ENT.AdminOnly		= true
+ENT.LastPlay 		= 0
+
 
 -- This is the spawn function. It's called when a client calls the entity to be spawned.
 -- If you want to make your SENT spawnable you need one of these functions to properly create the entity
@@ -76,6 +78,14 @@ function ENT:PortalPlayer( ply )
 			ply:SendLua([[LocalPlayer():ConCommand("connect 72.14.181.134:27015")]])
 		end
 	end )
+end
+
+function ENT:Think()
+	if CLIENT then return end
+	if self.LastPlay < CurTime() then
+		self.LastPlay = CurTime() + 60 * math.random(5, 15)
+		PlaySound(self)
+	end
 end
 
 --[[---------------------------------------------------------

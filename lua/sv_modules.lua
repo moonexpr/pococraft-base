@@ -27,7 +27,12 @@ function Logging.AddLog( message, closing )
 	end
 end
 
-hook.Add( "ShutDown", "EndLogging", Logging.AddLog( "Changing Maps", true ) ) -- Fires when changing maps
+--hook.Add( "ShutDown", "EndLogging", Logging.AddLog( "Changing Maps", true ) ) -- Fires when changing maps
+
+function _include( ModInfo, location )
+	local path = string.gsub(ModInfo.location, "/init.lua", "")
+	include(string.format("%s/%s", path, location))
+end
 
 function _loadmodule( location )
 	files, directories = file.Find( location, "LUA" )
@@ -35,16 +40,25 @@ function _loadmodule( location )
 		ModInfo = {
 			Name = string.format("%s (No ModInfo Table)", module),
 			Author = "Unknown (No ModInfo Table)",
+			location = string.gsub(location, "*", module)
 		}
 
 		include( string.format( "%s%s/init.lua", string.gsub(location, "*", ""), module ) )
 
 		if TestSuccess() then
-			Logging.AddLog( "| + Pococraft Base: Sucessfully loaded module \"" .. module .. "\"!" )
-			Logging.AddLog( "| ? Name: " .. ModInfo.Name )
-			Logging.AddLog( "| ? Author: " .. ModInfo.Author )
+			print( "| + Pococraft Base: Sucessfully loaded module \"" .. module .. "\"!" )
+			print( "| ? Name: " .. ModInfo.Name )
+			print( "| ? Author: " .. ModInfo.Author )
 		else
-			Logging.AddLog( "| + Pococraft Base: Failed to load module \"" .. module .. "\"!" )
+			print( "| + Pococraft Base: Failed to load module \"" .. module .. "\"!" )
 		end
+
+		PococraftModules = {
+			[#PococraftModules + 1] = {
+				Name = ModInfo.Name and ModInfo.Name or string.format("%s (No ModInfo Table)", module),
+				Author = ModInfo.Author and  ModInfo.Author or "Unknown (No ModInfo Table)",
+				location = ModInfo.location
+			}
+		}
 	end
 end

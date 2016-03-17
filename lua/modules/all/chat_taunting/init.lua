@@ -15,7 +15,7 @@ TauntsList = {
 	salute = true,
 	wave = "vo/npc/male01/hellodrfm0" .. math.random(1, 2) .. ".wav",
 	forward = true,
-	group = true,
+	group = true, 
 	halt = true,
 	pers = true,
 }
@@ -51,7 +51,7 @@ function ChatFilter( ply, text, team )
 					ply:EmitSound( TauntsList[taunt], 100, math.random(90, 110), 1, CHAN_AUTO )
 				end
 			end
-			return false
+			return ""
 		elseif string.find(taunt, "/advert") == 1 or string.find(taunt, "/a") == 1 then
 			if string.byte(taunt, 8, 8) == 32 then
 				message = string.gsub(string.gsub(taunt, "/advert ", ""), "/a ", "")
@@ -74,7 +74,7 @@ function ChatFilter( ply, text, team )
 	return DoTaunt( text )
 end
 
-hook.Add( "PlayerSay", "TauntsCheck", ChatFilter )
+hook.Add( "PlayerSay", "CheckTaunts", ChatFilter )
 
 
 function TestSuccess()

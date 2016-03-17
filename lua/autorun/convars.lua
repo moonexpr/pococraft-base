@@ -1,0 +1,1 @@
+CreateConVar( "mp_teleport_death", "1", FCVAR_USERINFO, "Toggle if you want to teleport when you die or not." )

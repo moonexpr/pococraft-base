@@ -1,15 +1,17 @@
 TriggerAmbience = {}
-net.Receive("TriggerEvent_SafeZone", function(len, ply)
+net.Receive("TriggerEvent:AmbientToggle", function(len, ply)
 	local url = net.ReadString()
 	local stop = net.ReadBool()
 	if stop then
 		hook.Remove("Tick", "FadeAway:" .. url)
-		if TriggerAmbience[url] then -- Be resourseful
+		if TriggerAmbience[url] and TriggerAmbience[url]:GetTime() ~= TriggerAmbience[url]:GetLength() then -- Be resourseful
 			TriggerAmbience[url]:SetVolume(1)
 		else
-			sound.PlayURL( url, "mono", function(channel)
+			sound.PlayURL( url, "noblock", function(channel)
 				TriggerAmbience[url] = channel
+				channel:EnableLooping( true )
 				channel:Play()
+				channel:EnableLooping( true )
 			end)
 		end
 	else

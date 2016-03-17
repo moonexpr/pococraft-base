@@ -1,9 +1,10 @@
 "AddonInfo"
 {
-	"name"				"Pococraft Base"
-	"version"			"b_09202015"
-	"up_date"			"09/20/15"
-	"author_url"		"http://www.pococraft.org"
-	"info"				"Advanced Admin Mod"
-	"override"			"0"
+	"name"		"Pococraft Base Addon"
+	"version"	"Beta 5"
+	"up_date"	"3/17/2016"
+	"author_name"	"Potatofactory, Poco, Flex & Foohy"
+	"author_email"	"mrpotatofactory@gmail.com"
+
+	"info"		""
 }
