@@ -15,14 +15,7 @@ Cheatcodes.List = {
 			ply:Kill()
 		end,
 	},
-	{
-		"Virus.DOS.Pro-Alife",
-		"More coming soon...",
-		function(ply)
-			ply:GodEnable()
-			ply:SetMoveType(MOVETYPE_NOCLIP)
-		end,
-	}
+	-- you fill in the rest
 }
 
 function Cheatcodes.FindCode( code )
