@@ -7,18 +7,18 @@ end
 
 
 DisconnectReasons = {
-	["Disconnect by user."] = "walked out of <color=150,0,250>Club Random",
-	["Client left game (Steam auth ticket has been canceled)"] = "left because of a Steam mishap.",
-	["Too many warnings"] = "reached the warning limit!",
-	["Connection closing"] = "lost connection to <color=150,0,250>Club Random",
-	["timed out"] = "has crashed and left <color=150,0,250>Club Random",
-	["(manager)"] = "was removed from the game by a Manager",
-	["(Administrator)"] = "was removed from the game by an Administrator",
-	["You are banished"] = "was banished from this realm",
-	["Vote kick successful."] = "was voted out of <color=150,0,250>Club Random",
-	["Ejected from our world"] = "fell into a black hole",
-	["#DisconnectUnknown"] = "left because of a Steam mishap.",
-	["#DisconnectTeleporter"] = "has teleported away from <color=150,0,250>Club Random"
+	["Disconnect by user."] = {"walked out of ",Color(150,0,250),"Club Random"},
+	["Client left game (Steam auth ticket has been canceled)"] = {"left because of a Steam mishap."},
+	["Too many warnings"] = {"reached the warning limit!"},
+	["Connection closing"] = {"lost connection to ",Color(150,0,250),"Club Random"},
+	["timed out"] = {"has crashed and left ",Color(150,0,250),"Club Random"},
+	["(manager)"] = {"was removed from the game by a Manager"},
+	["(Administrator)"] = {"was removed from the game by an Administrator"},
+	["You are banished"] = {"was banished from this realm"},
+	["Vote kick successful."] = {"was voted out of ",Color(150,0,250),"Club Random"},
+	["Ejected from our world"] = {"fell into a black hole"},
+	["#DisconnectUnknown"] = {"left because of a Steam mishap."},
+	["#DisconnectTeleporter"] = {"has teleported away from ",Color(150,0,250),"Club Random"},
 }
 
 hook.Add( "PlayerInitialSpawn", "AnnouncePlayer", function( player_object )
@@ -83,13 +83,13 @@ gameevent.Listen("player_disconnect")
 hook.Add("player_disconnect", "atlaschat.DisconnectMessage", function(data)
 	local function LookupReason( reason )
 		local strReason = nil
-		for seed, string in pairs(DisconnectReasons) do
+		for seed, str in pairs(DisconnectReasons) do
 			if string.find(string.lower(reason), string.lower(seed)) then
-				strReason = string
+				strReason = str
 				break
 			end
 		end
-		return strReason
+		return unpack(strReason)
 	end
 	local strReason = LookupReason(data.reason)
 	if data.networkid == "BOT" then
@@ -98,11 +98,11 @@ hook.Add("player_disconnect", "atlaschat.DisconnectMessage", function(data)
 	if table.HasValue(DisconnectReasons, data.reason) or strReason ~= nil then
 		if TeleporteredPlayers ~= nil and TeleporteredPlayers[data.networkid] then
 			TeleporteredPlayers[data.networkid] = false
-			ChatAddText( Color(0, 150, 150), data.name, Color(255, 255, 255), " " .. DisconnectReasons["#DisconnectTeleporter"] )
+			ChatAddText( Color(0, 150, 150), data.name, Color(255, 255, 255), " " .. unpack(DisconnectReasons["#DisconnectTeleporter"]) )
 		else
 			ChatAddText( Color(0, 150, 150), data.name, Color(255, 255, 255), " " .. strReason )
 		end
 	else
-		ChatAddText( Color(0, 150, 150), data.name, Color(255, 255, 255), " " .. DisconnectReasons["#DisconnectUnknown"] )		
+		ChatAddText( Color(0, 150, 150), data.name, Color(255, 255, 255), " " .. unpack(DisconnectReasons["#DisconnectUnknown"]) )		
 	end
 end)
